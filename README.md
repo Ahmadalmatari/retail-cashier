@@ -15,7 +15,7 @@ Retail cashier is an application to give you a discount based on your purchase
 http://localhost:8080/check-out
 
 * you can use the below body as refernce to create new cart
-
+```
 {
     "user": {
         "id": "1",
@@ -35,3 +35,4 @@ http://localhost:8080/check-out
         }
     ]
 }
+```
