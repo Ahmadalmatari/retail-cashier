@@ -1,1 +1,14 @@
+spring:
+  application:
+    name: retail-cashier
+  profiles:
+    active: test
+
+logging:
+  file:
+    path: './logs/${spring.application.name}'
+    name: ${logging.file.path}/retail-cashier.log
+  level:
+    com:
+      retailCashier: debug
 

@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: retail-cashier
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    password:
+    driver-class-name: org.h2.Driver
+    username: root
+    url: jdbc:h2:mem:retail_cashier;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS retail_cashier
+
+logging:
+  file:
+    path: './logs/${spring.application.name}'
+    name: ${logging.file.path}/retail-cashier.log
+  level:
+    com:
+      retail_cashier: debug

@@ -1,26 +1,36 @@
 package com.example.retailcashier.models;
 
+import javax.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+@NoArgsConstructor
 @Data
+@Entity
+@Table
 public class Bill {
 
-    Cart cart;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    CustomerType customerType;
+    @OneToOne
+    @JoinColumn(name = "cart_id")
+    @MapsId("cart_id")
+    private Cart cart;
 
-    List<Products> products;
-    Double amount;
+    @Column
+    private CustomerType customerType;
 
-    public Bill() {
-    }
+    @OneToMany
+    @Column
+    private List<Product> products;
 
-    public Bill(Cart cart, CustomerType customerType, List<Products> products, Double amount) {
-        this.cart = cart;
-        this.customerType = customerType;
-        this.products = products;
-        this.amount = amount;
-    }
+    @Column
+    private BigDecimal amount;
+
+
 }

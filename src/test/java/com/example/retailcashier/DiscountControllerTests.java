@@ -1,9 +1,11 @@
 package com.example.retailcashier;
 
-import com.example.retailcashier.models.Cart;
 import com.example.retailcashier.models.CustomerType;
-import com.example.retailcashier.models.Products;
+import com.example.retailcashier.models.Product;
 import com.example.retailcashier.models.User;
+import com.example.retailcashier.repositories.CartRepository;
+import com.example.retailcashier.repositories.UserRepository;
+import com.example.retailcashier.servieces.dto.CartDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@Transactional
 class DiscountControllerTests {
 
     protected MockMvc mockMvc;
@@ -31,8 +36,22 @@ class DiscountControllerTests {
     @Autowired
     protected WebApplicationContext webApplicationContext;
 
+
+    private final User user = new User();
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    CartRepository cartRepository;
+
     @BeforeEach
     void prepareTest() {
+
+
+        user.setCustomerType(CustomerType.EMPLOYEE);
+        user.setName("test");
+
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
     }
@@ -40,16 +59,16 @@ class DiscountControllerTests {
     @Test
     void checkOut() throws Exception {
 
-        List<Products> test = new ArrayList<>();
+        List<Product> test = new ArrayList<>();
 
 
-        test.add(new Products("1", "t1", 1.2));
-        test.add(new Products("2", "t2", 2.2));
+        test.add(new Product(1L, "t1", BigDecimal.valueOf(100)));
+        test.add(new Product(2L, "t2", BigDecimal.valueOf(200)));
 
-        User user = new User("1", "ahmad", CustomerType.EMPLOYEE);
-        Cart cart = new Cart(user, test);
+        CartDto cart = new CartDto(1L,test);
 
         String json = objectMapper.writeValueAsString(cart);
+
 
         mockMvc.perform(MockMvcRequestBuilders.post("/check-out").contentType(MediaType.APPLICATION_JSON).content(json))
                 .andDo(print())

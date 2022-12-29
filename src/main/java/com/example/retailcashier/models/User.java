@@ -1,15 +1,25 @@
 package com.example.retailcashier.models;
 
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table
 public class User {
 
-    String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    String name;
+    @Column
+    private String name;
 
-    CustomerType customerType;
+    @Column
+    private CustomerType customerType;
 }
